@@ -1,0 +1,8 @@
+{
+  "name": "crypto-note",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/FynnGrandke/crypto-note.git",
+  "author": "Fynn Grandke",
+  "license": "MIT"
+}
