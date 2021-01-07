@@ -46,13 +46,29 @@ class Blockchain {
     this.blockchain = [this.genesisBlock()]
   }
 
-  addNewBlock(block: InputBlock) {
-    const newBlock = new BlockchainBlock({ ...})
-    this.blockchain.push({ ... })
+  addNewBlock(InputBlock: InputBlock) {
+    const previousBlock = this.getLatestBlock()
+    const newIndex = previousBlock.index + 1
+    const currentDate = new Date()
+    const previousHash = previousBlock.getHash()
+
+    this.blockchain.push(
+      new BlockchainBlock({
+        ...InputBlock,
+        index: newIndex,
+        timestamp: currentDate,
+        previousHash: previousHash,
+      })
+    )
   }
 
   genesisBlock() {
-    return new BlockchainBlock(0, new Date(), 'Initializing Blockchain', 0)
+    return new BlockchainBlock({
+      data: 'Initialize Blockchain',
+      index: 0,
+      timestamp: new Date(),
+      previousHash: '0',
+    })
   }
 
   getLatestBlock() {
