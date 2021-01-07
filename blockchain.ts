@@ -1,11 +1,11 @@
 import * as crypto from 'crypto'
 
 type InputBlock = {
-  data: {
+  data: [{
     sender: string
     recipient: string
     amount: number
-  }
+  }]
 }
 
 type Block = InputBlock & {
@@ -87,6 +87,6 @@ class Blockchain {
 const blockChain = new Blockchain()
 console.log(blockChain.getLatestBlock())
 blockChain.addNewBlock({
-  data: { sender: 'Fynn', recipient: 'Jenn', amount: 10 },
+  data: [{ sender: 'Fynn', recipient: 'Jenn', amount: 10 }],
 })
 console.log(blockChain.getLatestBlock())
