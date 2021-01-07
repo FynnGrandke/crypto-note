@@ -1,5 +1,15 @@
 import * as crypto from 'crypto'
 
+type InputBlock = {
+  data: Object
+}
+
+type Block = InputBlock & {
+  index: number
+  timestamp: Date
+  previousHash: string
+}
+
 class BlockchainBlock {
   index: number
   timestamp: Date
@@ -7,7 +17,7 @@ class BlockchainBlock {
   previousHash: string
   hash = crypto.createHash('sha256')
 
-  constructor(index, timestamp, data, previousHash = '') {
+  constructor({ index, timestamp, data, previousHash = '' }: Block) {
     this.index = index
     this.timestamp = timestamp
     this.data = data
@@ -36,8 +46,9 @@ class Blockchain {
     this.blockchain = [this.genesisBlock()]
   }
 
-  addNewBlock(block: BlockchainBlock) {
-    this.blockchain.push({ ...block })
+  addNewBlock(block: InputBlock) {
+    const newBlock = new BlockchainBlock({ ...})
+    this.blockchain.push({ ... })
   }
 
   genesisBlock() {
