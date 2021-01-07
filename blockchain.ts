@@ -15,27 +15,27 @@ class BlockchainBlock {
   timestamp: Date
   data: Object
   previousHash: string
-  hash = crypto.createHash('sha256')
+  hash: string
 
   constructor({ index, timestamp, data, previousHash = '' }: Block) {
     this.index = index
     this.timestamp = timestamp
     this.data = data
     this.previousHash = previousHash
-    this.setHash()
+    this.hash = this.createHash()
   }
 
   getHash() {
-    return this.hash.digest('hex')
+    return this.hash
   }
 
-  setHash() {
-    this.hash.update(
+  createHash() {
+    return crypto.createHash('sha256').update(
       this.index.toString() +
         this.timestamp.toISOString() +
         this.previousHash +
         JSON.stringify(this.data)
-    )
+    ).digest('hex')
   }
 }
 
@@ -75,3 +75,6 @@ class Blockchain {
     return this.blockchain[this.blockchain.length - 1]
   }
 }
+
+const blockChain = new Blockchain()
+console.log(blockChain.getLatestBlock())
