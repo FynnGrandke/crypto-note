@@ -1,7 +1,11 @@
 import * as crypto from 'crypto'
 
 type InputBlock = {
-  data: Object
+  data: {
+    sender: string
+    recipient: string
+    amount: number
+  }
 }
 
 type Block = InputBlock & {
@@ -30,12 +34,15 @@ class BlockchainBlock {
   }
 
   createHash() {
-    return crypto.createHash('sha256').update(
-      this.index.toString() +
-        this.timestamp.toISOString() +
-        this.previousHash +
-        JSON.stringify(this.data)
-    ).digest('hex')
+    return crypto
+      .createHash('sha256')
+      .update(
+        this.index.toString() +
+          this.timestamp.toISOString() +
+          this.previousHash +
+          JSON.stringify(this.data)
+      )
+      .digest('hex')
   }
 }
 
@@ -64,6 +71,7 @@ class Blockchain {
 
   genesisBlock() {
     return new BlockchainBlock({
+      // @ts-ignore For the genesis block we don't need sender etc.
       data: 'Initialize Blockchain',
       index: 0,
       timestamp: new Date(),
@@ -77,4 +85,8 @@ class Blockchain {
 }
 
 const blockChain = new Blockchain()
+console.log(blockChain.getLatestBlock())
+blockChain.addNewBlock({
+  data: { sender: 'Fynn', recipient: 'Jenn', amount: 10 },
+})
 console.log(blockChain.getLatestBlock())
