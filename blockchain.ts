@@ -28,3 +28,23 @@ class BlockchainBlock {
     )
   }
 }
+
+class Blockchain {
+  blockchain: BlockchainBlock[]
+
+  constructor() {
+    this.blockchain = [this.genesisBlock()]
+  }
+
+  addNewBlock(block: BlockchainBlock) {
+    this.blockchain.push({ ...block })
+  }
+
+  genesisBlock() {
+    return new BlockchainBlock(0, new Date(), 'Initializing Blockchain', 0)
+  }
+
+  getLatestBlock() {
+    return this.blockchain[this.blockchain.length - 1]
+  }
+}
