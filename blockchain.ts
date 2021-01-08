@@ -54,7 +54,6 @@ class BlockchainBlock {
 
     while (this.hash.substring(0, difficulty) !== zeroString) {
       this.nonce++
-      console.log('current hash: ', this.hash)
       this.hash = this.createHash()
     }
   }
