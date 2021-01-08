@@ -82,11 +82,25 @@ class Blockchain {
   getLatestBlock() {
     return this.blockchain[this.blockchain.length - 1]
   }
+
+  validateChain() {
+    return this.blockchain.every((block, idx) => {
+      if (block.hash != block.createHash()) {
+        return false
+      }
+      if (idx > 0 && block.previousHash != this.blockchain[idx - 1].hash) {
+        return false
+      }
+      return true
+    })
+  }
 }
 
 const blockChain = new Blockchain()
-console.log(blockChain.getLatestBlock())
+console.log('initial block:', blockChain.getLatestBlock())
 blockChain.addNewBlock({
   data: [{ sender: 'Fynn', recipient: 'Jenn', amount: 10 }],
 })
-console.log(blockChain.getLatestBlock())
+console.log('first block:', blockChain.getLatestBlock())
+console.log('first validate:', blockChain.validateChain())
+
