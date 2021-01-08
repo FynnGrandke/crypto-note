@@ -1,11 +1,13 @@
 import * as crypto from 'crypto'
 
 type InputBlock = {
-  data: [{
-    sender: string
-    recipient: string
-    amount: number
-  }]
+  data: [
+    {
+      sender: string
+      recipient: string
+      amount: number
+    }
+  ]
 }
 
 type Block = InputBlock & {
@@ -20,6 +22,7 @@ class BlockchainBlock {
   data: Object
   previousHash: string
   hash: string
+  nonce = 0
 
   constructor({ index, timestamp, data, previousHash = '' }: Block) {
     this.index = index
@@ -40,9 +43,20 @@ class BlockchainBlock {
         this.index.toString() +
           this.timestamp.toISOString() +
           this.previousHash +
-          JSON.stringify(this.data)
+          JSON.stringify(this.data) +
+          this.nonce
       )
       .digest('hex')
+  }
+
+  proofOfWork(difficulty: number) {
+    const zeroString = Array.from(new Array(difficulty), (_) => '0').join('')
+
+    while (this.hash.substring(0, difficulty) !== zeroString) {
+      this.nonce++
+      console.log('current hash: ', this.hash)
+      this.hash = this.createHash()
+    }
   }
 }
 
@@ -59,14 +73,16 @@ class Blockchain {
     const currentDate = new Date()
     const previousHash = previousBlock.getHash()
 
-    this.blockchain.push(
-      new BlockchainBlock({
-        ...InputBlock,
-        index: newIndex,
-        timestamp: currentDate,
-        previousHash: previousHash,
-      })
-    )
+    const newBlock = new BlockchainBlock({
+      ...InputBlock,
+      index: newIndex,
+      timestamp: currentDate,
+      previousHash: previousHash,
+    })
+
+    newBlock.proofOfWork(3)
+
+    this.blockchain.push(newBlock)
   }
 
   genesisBlock() {
@@ -103,4 +119,3 @@ blockChain.addNewBlock({
 })
 console.log('first block:', blockChain.getLatestBlock())
 console.log('first validate:', blockChain.validateChain())
-
