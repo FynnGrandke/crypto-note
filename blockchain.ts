@@ -116,5 +116,5 @@ console.log('initial block:', blockChain.getLatestBlock())
 blockChain.addNewBlock({
   data: [{ sender: 'Fynn', recipient: 'Jenn', amount: 10 }],
 })
-console.log('first block:', blockChain.getLatestBlock())
+console.log('second block:', blockChain.getLatestBlock())
 console.log('first validate:', blockChain.validateChain())
